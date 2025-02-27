@@ -1,25 +1,73 @@
-# fotografia-sistema
+Feito com Fastify 
 
-### Para README Front-End
-<a href="./front-end/README.md">Front-end</a>
+execute primeiro : `npm install`
 
-### Para README Back-End
-<a href="./back-end/README.md">Back-end</a>
+Executar projeto: `npm run dev`
 
-## Telas
+## Rotas possiveis do sistema
 
-### Tela inicial
+* /photographer
+    * post
+        * {
+            nome: string,
+            apelido: string,
+            dataNascimento: date,
+            email: string,
+            cpf: string
+            }
 
-<img src="prints/tela_inicial.png">
+* /photographer/:cpfPhotographer
+    * put
+        * {
+            apelido: string,
+            email: string
+            }
+    * get
+    * delete
 
-### Tela Perfil do funcionario
+* /client
+    * post
+        * {
+            nome: string,
+            apelido: string,
+            email: string,
+            cpf: string
+            }
+    * get
+            
+* /client/:cpfClient
+    * put
+        * {
+            apelido: string,
+            email: string
+            }
+    * get
+    * delete
 
-<img src="prints/perfil_funcionario.png">
+* /photo/
+    * get
 
-### Tela dos produtos do funcionario
+* /photo/:cpfPhotographer
+    * post
+        * {
+            url: string,
+            price: number
+            }
+    * get
 
-<img src="prints/tela_produtos.png">
+* /photo/:cpfPhotographer/:idPhoto
+    * post
+        * {
+            price: number
+            }
+    * delete
 
-### Tela de cadastro de usurios
+<hr>
 
-<img src="prints/tela_cadastro.png">
+* /client/validation
+    * post
+        * { email: string }
+        
+* /photographer/validation
+    * post
+        * { email: string }
