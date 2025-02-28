@@ -1,4 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
+import { verifyToken } from "../controllers/token/generate-token";
 
 export default function accessControllMiddleware(
     request: FastifyRequest,
@@ -7,17 +8,26 @@ export default function accessControllMiddleware(
 ) {
     const {url, method} = request
     const publicRoutes = [
-        {method: "POST", url: ["/photographer", "/photographer/validation"]},
-        {method: "POST", url: ["/client", "/client/validation"]},
-        {method: "GET", url: ["/photo"]},
+        {method: "POST", url: ["/artista"]},
+        {method: "GETD", url: ["/artista/:userName/arte"]},
     ]
     const authorizationHeader = request.headers.authorization
+
+    if (!authorizationHeader) {
+        reply.status(401).send({ message: "Token de autenticação necessário!" });
+        return;
+    }
+
+    let decoded = null;
+    verifyToken(authorizationHeader).then((response) => {
+        decoded = response
+    })
 
     const isPublicRoute = publicRoutes.some(
         (route) => route.url.includes(url) && route.method === method
     )
 
-    if (isPublicRoute || authorizationHeader) {
+    if (isPublicRoute || decoded) {
         done();
     } else {
         reply.status(403).send({ message: "Acesso restrito!" });

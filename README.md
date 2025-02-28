@@ -19,9 +19,11 @@ classDiagram
     
     class Arte {
         +String titulo
-        +String blob
+        +String descricao
+        +String imagem
         +float valor
         +String genero
+        +int desconto
     }
     
     Artista "1" --> "*" Arte : possui
