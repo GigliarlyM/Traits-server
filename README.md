@@ -1,25 +1,51 @@
-# fotografia-sistema
+# FotoHub
 
-### Para README Front-End
-<a href="./front-end/README.md">Front-end</a>
+Feito com Fastify 
 
-### Para README Back-End
-<a href="./back-end/README.md">Back-end</a>
+execute primeiro : `npm install`
 
-## Telas
+Executar projeto: `npm run dev`
 
-### Tela inicial
+## Requisitos
 
-<img src="prints/tela_inicial.png">
+- TypeScript
+    - tsx
+    - typescript
+    - @types/
+        - jsonwebtoken
+        - mongoose
+        - node
+- fastify
+- fastify-jwt
+- fastify-type-provider-zod
+- jsonwebtoken
+- mongoose
+- zod
+- dotenv
+- @fastify/
+    - cors
+    - jwt
 
-### Tela Perfil do funcionario
+## Diagrama
+```mermaid
+classDiagram
+    class Artista {
+        +String nome
+        +int idade
+        +String userName
+        +String senha
+        +List~Arte~ artes
+    }
+    
+    class Arte {
+        +String titulo
+        +String descricao
+        +String imagem
+        +float valor
+        +String genero
+        +int desconto
+    }
+    
+    Artista "1" --> "*" Arte : possui
 
-<img src="prints/perfil_funcionario.png">
-
-### Tela dos produtos do funcionario
-
-<img src="prints/tela_produtos.png">
-
-### Tela de cadastro de usurios
-
-<img src="prints/tela_cadastro.png">
+```
