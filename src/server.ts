@@ -1,8 +1,8 @@
 import cors from "@fastify/cors";
 import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
-import { env } from "./src/env";
+import { env } from "./env";
 import jwt from "@fastify/jwt"
-import app from "./src/routes/geral"
+import app from "./routes/geral"
 
 import "./config/db"
 

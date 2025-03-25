@@ -64,7 +64,7 @@ async function getArtista(app: FastifyInstance) {
 
 
 async function deleteArtista(app: FastifyInstance) {
-    app.withTypeProvider<ZodTypeProvider>().get('/artista/:userName', {
+    app.withTypeProvider<ZodTypeProvider>().delete('/artista/:userName', {
         schema: {
             params: z.object({
                 userName: z.coerce.number()

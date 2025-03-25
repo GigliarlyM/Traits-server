@@ -2,9 +2,9 @@
   "name": "back-end",
   "version": "1.0.0",
   "description": "Feito com Fastify",
-  "main": "server.ts",
+  "main": "./src/server.ts",
   "scripts": {
-    "dev": "tsx watch server.ts"
+    "dev": "tsx watch ./src/server.ts"
   },
   "keywords": [],
   "author": "",
