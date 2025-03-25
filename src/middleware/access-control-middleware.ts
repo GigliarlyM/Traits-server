@@ -9,7 +9,7 @@ export default function accessControllMiddleware(
     const {url, method} = request
     const publicRoutes = [
         {method: "POST", url: ["/artista"]},
-        {method: "GETD", url: ["/artista/:userName/arte"]},
+        {method: "GET", url: ["/arte/artista/:userName", "/arte"]},
     ]
     const authorizationHeader = request.headers.authorization
 

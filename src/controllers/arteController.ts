@@ -5,7 +5,7 @@ import artistaModel from "../model/artista";
 import arteModel from "../model/arte"
 
 async function addArte(app: FastifyInstance) {
-    app.withTypeProvider<ZodTypeProvider>().post('/artista/:userName/arte', {
+    app.withTypeProvider<ZodTypeProvider>().post('/arte/artista/:userName', {
         schema: {
             params: z.object({
                 userName: z.coerce.number()
@@ -38,7 +38,7 @@ async function addArte(app: FastifyInstance) {
 }
 
 async function getArte(app: FastifyInstance) {
-    app.withTypeProvider<ZodTypeProvider>().get('/artista/:userName/arte', {
+    app.withTypeProvider<ZodTypeProvider>().get('/arte/artista/:userName', {
         schema: {
             params: z.object({
                 userName: z.coerce.number()
@@ -57,7 +57,22 @@ async function getArte(app: FastifyInstance) {
     })
 }
 
+async function getArtes(app: FastifyInstance) {
+    app.withTypeProvider<ZodTypeProvider>().get('/arte/',
+        async () => {
+            try {    
+                const artes = await arteModel.find();
+                
+                return { artes }
+            } catch (error) {
+                throw new Error('Erro ao buscar artes')
+            }
+        }
+    )
+}
+
 export {
     addArte,
-    getArte
+    getArte,
+    getArtes
 }

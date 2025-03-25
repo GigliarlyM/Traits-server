@@ -3,7 +3,7 @@ import {
     createArtista, deleteArtista, getArtista, updateArtista
 } from "../controllers/artistaController";
 import {
-    addArte, getArte
+    addArte, getArte, getArtes
 } from "../controllers/arteController"
 import accessControllMiddleware from "../middleware/access-control-middleware";
 
@@ -18,6 +18,7 @@ app.register(deleteArtista)
 // operacoes de arte
 app.register(addArte)
 app.register(getArte)
+app.register(getArtes)
 
 app.addHook('onRequest', accessControllMiddleware)
 
