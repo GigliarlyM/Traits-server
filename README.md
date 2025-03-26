@@ -31,10 +31,6 @@ Executar projeto: `npm run dev`
 ```mermaid
 classDiagram
     class Artista {
-        +String nome
-        +int idade
-        +String userName
-        +String senha
         +List~Arte~ artes
     }
     class Arte {
@@ -57,7 +53,7 @@ classDiagram
     class Cliente {
 	    +String nome
 	    +int idade
-	    +String userName
+	    +String gmail
 	    +String senha
     }
     Artista "*" <--> "*" Arte : possui
