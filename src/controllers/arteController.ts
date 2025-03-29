@@ -5,74 +5,72 @@ import artistaModel from "../model/artista";
 import arteModel from "../model/arte"
 
 async function addArte(app: FastifyInstance) {
-    app.withTypeProvider<ZodTypeProvider>().post('/arte/artista/:userName', {
-        schema: {
-            params: z.object({
-                userName: z.coerce.number()
-            }),
-            body: z.object({
-                titulo: z.string(),
-                descricao: z.string(),
-                imagem: z.string(),
-                valor: z.coerce.number(),
-                genero: z.string()
-            })
-        }
-    }, async (request) => {
-        const { userName } = request.params
-        const arte = request.body
-        const artista = await artistaModel.findOne({ userName: userName })
-        if (!artista) {
-            throw new Error('Artista não encontrado')
-        }
-        const arteCreated = await arteModel.insertOne(arte)
+   app.withTypeProvider<ZodTypeProvider>().post('/art/artist/:userName', {
+      schema: {
+         params: z.object({
+            userName: z.coerce.number()
+         }),
+         body: z.object({
+            titulo: z.string(),
+            descricao: z.string(),
+            imagem: z.string(),
+            valor: z.coerce.number(),
+            genero: z.string()
+         })
+      }
+   }, async (request) => {
+      const { userName } = request.params
+      const arte = request.body
+      const artista = await artistaModel.findOne({ userName: userName })
+      if (!artista) {
+         throw new Error('Artista não encontrado')
+      }
+      const arteCreated = await arteModel.insertOne(arte)
 
-        artista.artes.push(arteCreated.id)
-        await artistaModel.findOneAndUpdate(
-            { userName: artista.userName },
-            { artes: artista.artes }
-        )
+      artista.artes.push(arteCreated.id)
+      await artistaModel.findOneAndUpdate(
+         { userName: artista.userName },
+         { artes: artista.artes }
+      )
 
-        return { userName, arteCreated }
-    })
+      return { userName, arteCreated }
+   })
 }
 
 async function getArte(app: FastifyInstance) {
-    app.withTypeProvider<ZodTypeProvider>().get('/arte/artista/:userName', {
-        schema: {
-            params: z.object({
-                userName: z.coerce.number()
-            })
-        }
-    }, async (request) => {
-        const { userName } = request.params
-        const artista = await artistaModel.findOne({ userName: userName })
-        if (!artista) {
-            throw new Error('Artista não encontrado')
-        }
+   app.withTypeProvider<ZodTypeProvider>().get('/art/artist/:userName', {
+      schema: {
+         params: z.object({
+            userName: z.coerce.number()
+         })
+      }
+   }, async (request) => {
+      const { userName } = request.params
+      const artista = await artistaModel.findOne({ userName: userName })
+      if (!artista) {
+         throw new Error('Artista não encontrado')
+      }
 
-        const artes = await arteModel.find({ _id: artista.artes })
+      const artes = await arteModel.find({ _id: artista.artes })
 
-        return { userName, artes }
-    })
+      return { userName, artes }
+   })
 }
 
 async function getArtes(app: FastifyInstance) {
-    app.withTypeProvider<ZodTypeProvider>().get('/arte/',
-        async () => {
-            try {    
-                const artes = await arteModel.find();
-                
-                return { artes }
-            } catch (error) {
-                throw new Error('Erro ao buscar artes')
-            }
-        }
-    )
+   app.withTypeProvider<ZodTypeProvider>().get('/art', async () => {
+      try {
+         const artes = await arteModel.find();
+
+         return { artes }
+      } catch (error) {
+         throw new Error('Erro ao buscar artes')
+      }
+   })
 }
 
 export {
-    addArte,
-    getArte,
-    getArtes
+   addArte,
+   getArte,
+   getArtes
 }

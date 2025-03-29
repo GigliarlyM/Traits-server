@@ -1,9 +1,7 @@
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
-    status: Boolean,
-    quantidade: Number,
-    valorItem: Number,
+    status: { type: Boolean, default: false },
     formaPagamento: { type: String, default: "PIX" },
     quaisItens: [{ type: mongoose.Types.ObjectId }],
     // referencia o email do cliente que pediu

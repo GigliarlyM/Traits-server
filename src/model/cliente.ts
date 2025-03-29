@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
     senha: { type: String, required: true },
     // referencia a conta de artista SE o usuario possuir,
     // e caso possua, guardara o userName de artista
-    artista: String,
+    artista: { type: String, ref: "Artista" },
     pagamentos: [{ type: mongoose.Types.ObjectId, ref: "Pagamentos" }]
 })
 

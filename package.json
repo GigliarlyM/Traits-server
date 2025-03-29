@@ -24,7 +24,6 @@
     "fastify-jwt": "^4.2.0",
     "fastify-type-provider-zod": "^3.0.0",
     "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.15.0",
     "mongoose": "^8.6.3",
     "zod": "^3.23.8"
   }

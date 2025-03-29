@@ -18,7 +18,6 @@ app.register(jwt, {
     secret: envTranformed.SECRET
 })
 
-
 app.listen({ port: envTranformed.PORT }).then(() => {
     console.log(`Server listening on http://localhost:${envTranformed.PORT}`);
 })
