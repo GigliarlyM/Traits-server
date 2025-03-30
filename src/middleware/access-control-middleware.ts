@@ -9,7 +9,7 @@ export default function accessControllMiddleware(
     const { url, method } = request
     const publicRoutes = [
         { method: "POST", url: ["/artist", "/client", "/login"] },
-        { method: "GET", url: ["/art/artist/:userName", "/art"] },
+        { method: "GET", url: ["/art/artist/:userName", "/art", `/chat`] },
     ]
 
     const isPublicRoute = publicRoutes.some(
