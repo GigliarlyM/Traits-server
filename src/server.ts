@@ -15,9 +15,8 @@ app.register(cors, {
     origin: '*',
 })
 
-
+// Configuracao do socket
 app.register(webSocketRoutes)
-
 
 // config do fastify
 app.setValidatorCompiler(validatorCompiler)

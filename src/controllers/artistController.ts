@@ -15,6 +15,7 @@ export const createArtist = (app: FastifyInstance) => {
         const { userName, clientEmail } = request.body
 
         const artist = new Artista({ userName, client: clientEmail })
+	await artist.save()
 
         return { artist }
     })
@@ -30,7 +31,7 @@ export const getArtist = (app: FastifyInstance) => {
     }, async (request, response) => {
         const { userName } = request.params
 
-        const artist = Artista.findOne({ userName: userName })
+        const artist = await Artista.findOne({ userName: userName })
 
         return { artist }
     })

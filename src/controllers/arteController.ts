@@ -8,7 +8,7 @@ async function addArte(app: FastifyInstance) {
    app.withTypeProvider<ZodTypeProvider>().post('/art/artist/:userName', {
       schema: {
          params: z.object({
-            userName: z.coerce.number()
+            userName: z.string()
          }),
          body: z.object({
             titulo: z.string(),
