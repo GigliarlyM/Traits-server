@@ -1,7 +1,7 @@
 // Está em JS, pode ser mudado para TS para seguir a mesma lógica do projeto
 
-import * as dotenv from "dotenv";
-import { GoogleGenAI } from "@google/genai";
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -13,8 +13,8 @@ async function startChat(prompt, history = []) {
         throw new Error("Chave de API não encontrada. Verifique o arquivo .env ou as variáveis de ambiente.");
     }
 
-    const genai = new GoogleGenAI(apiKey);
-    const model = await genai.models.generateContent("gemini-1.5-pro-latest");
+    const genai = new GoogleGenerativeAI(apiKey);
+    const model = genai.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
     const chat = model.startChat({ history });
 
 
@@ -28,12 +28,15 @@ async function startChat(prompt, history = []) {
         }
 
         try {
-            const response = await chat.sendMessage(prompt);
-            console.log(`Resposta: ${response.text}`);
+            const result = await chat.sendMessage(prompt);
+            const responseText = result.response.text();  
+            console.log(`Resposta: ${responseText}`);
         } catch (error) {
             console.error("Erro ao obter resposta:", error);
         }
     });
 }
 
-export { startChat };
+startChat();
+
+module.exports = { startChat };
