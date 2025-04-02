@@ -7,8 +7,10 @@ export default function accessControllMiddleware(
     done: (err?: Error) => void
 ) {
     const { url, method } = request
+    
     const publicRoutes = [
         { method: "POST", url: ["/artist", "/client", "/login"] },
+        { method: "OPTIONS", url: ["/client", "/login"] },
         { method: "GET", url: ["/art/artist/:userName", "/art", `/chat`] },
     ]
 
