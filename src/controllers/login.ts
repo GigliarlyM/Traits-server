@@ -13,6 +13,7 @@ export default async function login(app: FastifyInstance) {
             })
         },
     }, async (request) => {
+        console.log("Requisicao post /login")
         const { email, senha } = request.body
 
         const cliente = await Cliente.findOne({ email: email })
