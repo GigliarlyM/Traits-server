@@ -7,7 +7,8 @@ const envTransform = z.object({
     PORT: z.coerce.number().default(8080),
     SECRET: z.string(),
     MONGO_URI: z.string(),
-    MONGO_URI_ONLINE: z.string()
+    MONGO_URI_ONLINE: z.string(),
+    GOOGLE_GEMINI_API_KEY: z.string()
 })
 
 export const envTranformed = envTransform.parse(env)

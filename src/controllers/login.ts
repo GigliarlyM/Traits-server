@@ -13,12 +13,12 @@ export default async function login(app: FastifyInstance) {
             })
         },
     }, async (request) => {
-        console.log("Requisicao post /login")
         const { email, senha } = request.body
 
         const cliente = await Cliente.findOne({ email: email })
         if (!cliente || cliente.senha !== senha) {
-            throw new Error('Credenciais inválidas')
+            console.error("Credenciais invalidas")
+            return { message: "Credenciais invalidas" }
         }
 
         const token = await generateToken(

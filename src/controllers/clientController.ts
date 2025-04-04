@@ -16,10 +16,21 @@ export const createClient = (app: FastifyInstance) => {
     }, async (require, response) => {
         const credencial = require.body;
 
-        const client = new Client(credencial)
-        await client.save()
+        console.log("Credenciais recebidas")
+        console.log(credencial)
 
-        return { client }
+        try {
+            const client = new Client(credencial)
+            await client.save()
+
+            console.log("Credenciais salvas")
+            response.status(201)
+
+            return { client }
+        } catch (err) {
+            console.log("Ja esta cadastrado")
+            return { message: "Crendenciais invalidas ou dados ja cadastrados" }
+        }
     })
 }
 

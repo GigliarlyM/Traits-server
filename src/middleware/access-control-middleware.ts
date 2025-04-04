@@ -8,6 +8,8 @@ export default function accessControllMiddleware(
 ) {
     const { url, method } = request
     
+    console.log(method, url)
+
     const publicRoutes = [
         { method: "POST", url: ["/artist", "/client", "/login"] },
         { method: "OPTIONS", url: ["/client", "/login"] },
