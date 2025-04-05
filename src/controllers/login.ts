@@ -25,6 +25,6 @@ export default async function login(app: FastifyInstance) {
             { nome: cliente.nome, idade: cliente.idade, email: cliente.email }
         )
 
-        return { email, token }
+        return { name: cliente.nome, email, token }
     })
 }

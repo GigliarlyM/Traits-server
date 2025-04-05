@@ -61,7 +61,6 @@ async function getArtes(app: FastifyInstance) {
    app.withTypeProvider<ZodTypeProvider>().get('/art', async () => {
       try {
          const artes = await arteModel.find();
-	 console.log("chamada recebida")
 
          return { artes }
       } catch (error) {

@@ -12,18 +12,24 @@ export const createPayment = (app: FastifyInstance) => {
                 cliente: z.string().email()
             })
         }
-    }, async (request) => {
+    }, async (request, reply) => {
         const { items, formaPagamento, cliente } = request.body
 
-        const payment = new Pagamento({ quaisItens: items, formaPagamento, cliente })
-        await payment.save()
-
-        return { payment }
+        try {
+            const payment = new Pagamento({ quaisItens: items, formaPagamento, cliente })
+            await payment.save()
+            
+            return { payment }
+        } catch (_) {
+            reply.status(400)
+            console.error("Erro ao savar o payment")
+            return { message: 'Error saving payment' }
+        }
     })
 }
 
 export const confirmPayment = (app: FastifyInstance) => {
-    app.withTypeProvider<ZodTypeProvider>().post('/payment/:"id', {
+    app.withTypeProvider<ZodTypeProvider>().get('/payment/:"id', {
         schema: {
             params: z.object({
                 id: z.string()

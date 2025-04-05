@@ -3,7 +3,7 @@ import { envTranformed } from "../env";
 
 const geminiKey = envTranformed.GOOGLE_GEMINI_API_KEY
 
-async function sendMessageToAi(prompt: string, history: []) {
+export default async function sendMessageToAi(prompt: string, history: []) {
     if (!geminiKey) throw new Error("Chave de API nao encontrada.");
 
     const genai = new GoogleGenerativeAI(geminiKey)
