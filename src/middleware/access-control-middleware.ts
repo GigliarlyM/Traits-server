@@ -31,9 +31,10 @@ export default function accessControllMiddleware(
         return;
     }
 
-    verifyToken(authorizationHeader).then(() =>
+    verifyToken(authorizationHeader).then(() => {
+        console.log("Token autenticado")
         done()
-    ).catch(() =>
+    }).catch(() =>
         reply.status(403).send({ message: "Acesso restrito!" })
     )
 

@@ -37,11 +37,11 @@ async function addArte(app: FastifyInstance) {
    })
 }
 
-async function getArte(app: FastifyInstance) {
+async function getArteByArtist(app: FastifyInstance) {
    app.withTypeProvider<ZodTypeProvider>().get('/art/artist/:userName', {
       schema: {
          params: z.object({
-            userName: z.coerce.number()
+            userName: z.string()
          })
       }
    }, async (request) => {
@@ -51,9 +51,27 @@ async function getArte(app: FastifyInstance) {
          throw new Error('Artista não encontrado')
       }
 
-      const artes = await arteModel.find({ _id: artista.artes })
+      // Buscandos artes relacionado com esse artista
+
+      const artes = await arteModel.find({ _id: { $in: artista.artes } })
 
       return { userName, artes }
+   })
+}
+
+async function getArte(app: FastifyInstance) {
+   app.withTypeProvider<ZodTypeProvider>().get('/art/:id', {
+      schema: {
+         params: z.object({
+            id: z.string()
+         })
+      }
+   }, async (request) => {
+      const { id } = request.params
+      
+      const arte = await arteModel.findById(id)
+
+      return { arte }
    })
 }
 
@@ -71,6 +89,7 @@ async function getArtes(app: FastifyInstance) {
 
 export {
    addArte,
-   getArte,
-   getArtes
+   getArteByArtist,
+   getArtes,
+   getArte
 }
