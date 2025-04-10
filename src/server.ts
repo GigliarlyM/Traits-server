@@ -15,7 +15,7 @@ import { envTranformed } from "./env";
 import accessControllMiddleware from "./middleware/access-control-middleware";
 
 import "./config/db";
-import { webSocketRoutes } from "./webSocket";
+import { getActiveConnections, webSocketRoutes } from "./webSocket";
 
 const app = fastify()
 
@@ -55,6 +55,7 @@ app.register(jwt, {
 
 // Configuracao do socket
 app.register(webSocketRoutes)
+app.register(getActiveConnections)
 
 // esse host 0.0.0.0 permite que o fastify aceite conexoes externas
 app.listen({ port: envTranformed.PORT, host: '0.0.0.0' }).then(() => {

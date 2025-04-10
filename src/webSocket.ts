@@ -11,10 +11,18 @@ interface ChatMessage {
   timestamp: Date;
 }
 
+const activeConnections = new Map<string, WebSocket>();
+
+export async function getActiveConnections(app: FastifyInstance) {
+  app.get(`/chat/actived`, () => {
+    const result: String[] = [...activeConnections.keys()]
+    
+    return { accountActived: result }
+  })
+}
+
 export async function webSocketRoutes(fastify: FastifyInstance) {
   await fastify.register(websocketPlugin);
-
-  const activeConnections = new Map<string, WebSocket>();
 
   fastify.get('/chat', {
     websocket: true,
@@ -41,7 +49,6 @@ export async function webSocketRoutes(fastify: FastifyInstance) {
             console.log(`Cliente id modificado: ${userId}`)
             activeConnections.set(userId, socket)
           }
-          console.log(message)
         } else {
           message.user = userId
         }
@@ -60,7 +67,7 @@ export async function webSocketRoutes(fastify: FastifyInstance) {
             } else {
               message.user = userId
             }
-          } 
+          }
         }
 
       } catch (error) {
@@ -96,7 +103,7 @@ export async function webSocketRoutes(fastify: FastifyInstance) {
             }
 
             activeConnections.get(message.user!)?.send(JSON.stringify(responseMessage))
-          }else {
+          } else {
             const errorMessage: ChatMessage = {
               type: 'error',
               message: 'Ocorreu um erro ao enviar a mensagem para o AI',
