@@ -5,7 +5,7 @@ import sendMessageToAi from "./ia/aiConnection";
 
 interface ChatMessage {
   type: 'message' | 'error' | 'join' | 'leave';
-  user: string;
+  user: string | null;
   message: string;
   to?: string;
   timestamp: Date;
@@ -29,6 +29,11 @@ export async function webSocketRoutes(fastify: FastifyInstance) {
       try {
         const message: ChatMessage = JSON.parse(rawMessage.toString())
         message.timestamp = new Date()
+
+        if (message.user == null) {
+          message.user = userId
+        }
+
         if (message.user.length >= 4) {
           if (message.user !== userId) {
             activeConnections.delete(userId)
@@ -36,12 +41,15 @@ export async function webSocketRoutes(fastify: FastifyInstance) {
             console.log(`Cliente id modificado: ${userId}`)
             activeConnections.set(userId, socket)
           }
+          console.log(message)
         } else {
           message.user = userId
         }
 
         if (message.type == `message`) {
           broadcastMessage(message, message.to)
+        } else if (message.type == "join") {
+          systemMessage(socket, userId)
         } else {
           if (message.user.length >= 4) {
             if (message.user !== userId) {
@@ -49,12 +57,10 @@ export async function webSocketRoutes(fastify: FastifyInstance) {
               userId = message.user
               console.log(`Cliente id modificado: ${userId}`)
               activeConnections.set(userId, socket)
+            } else {
+              message.user = userId
             }
-          } else {
-            message.user = userId
-          }
-
-          systemMessage(socket, userId)
+          } 
         }
 
       } catch (error) {
@@ -78,7 +84,7 @@ export async function webSocketRoutes(fastify: FastifyInstance) {
     if (to !== undefined && to !== null) {
       if (activeConnections.has(to)) {
         activeConnections.get(to)?.send(messageString)
-        activeConnections.get(message.user)?.send(messageString)
+        activeConnections.get(message.user!)?.send(messageString)
       } else if (to == "chat-ia") {
         sendMessageToAi(message.message).then((response) => {
           if (response != null) {
@@ -89,7 +95,7 @@ export async function webSocketRoutes(fastify: FastifyInstance) {
               timestamp: new Date(),
             }
 
-            activeConnections.get(message.user)?.send(JSON.stringify(responseMessage))
+            activeConnections.get(message.user!)?.send(JSON.stringify(responseMessage))
           }else {
             const errorMessage: ChatMessage = {
               type: 'error',
@@ -97,7 +103,7 @@ export async function webSocketRoutes(fastify: FastifyInstance) {
               user: 'System',
               timestamp: new Date(),
             }
-            activeConnections.get(message.user)?.send(JSON.stringify(JSON.stringify(errorMessage)))
+            activeConnections.get(message.user!)?.send(JSON.stringify(JSON.stringify(errorMessage)))
           }
         })
       }
@@ -116,7 +122,7 @@ export async function webSocketRoutes(fastify: FastifyInstance) {
     const responsePattern: ChatMessage = {
       type: 'message',
       user: `System`,
-      message: `Seu user id eh ${userId}`,
+      message: `id: ${userId}`,
       timestamp: new Date,
     }
 
