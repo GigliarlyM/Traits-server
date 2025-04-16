@@ -16,8 +16,11 @@ import accessControllMiddleware from "./middleware/access-control-middleware";
 
 import "./config/db";
 import { getActiveConnections, webSocketRoutes } from "./webSocket";
+import cors from '@fastify/cors'
 
 const app = fastify()
+
+app.register(cors)
 
 // config do fastify
 app.setValidatorCompiler(validatorCompiler)
