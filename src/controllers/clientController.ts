@@ -3,6 +3,7 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 import z from "zod";
 import Client from "../model/cliente";
 import Artista from "../model/artista";
+import cliente from "../model/cliente";
 
 export const createClient = (app: FastifyInstance) => {
     app.withTypeProvider<ZodTypeProvider>().post("/client", {
@@ -16,21 +17,14 @@ export const createClient = (app: FastifyInstance) => {
     }, async (require, response) => {
         const credencial = require.body;
 
-        console.log("Credenciais recebidas")
-        console.log(credencial)
-
-        try {
-            const client = new Client(credencial)
-            await client.save()
-
-            console.log("Credenciais salvas")
-            response.status(201)
-
-            return { client }
-        } catch (err) {
-            console.log("Ja esta cadastrado")
-            return { message: "Crendenciais invalidas ou dados ja cadastrados" }
+        const client = {
+            nome: credencial.nome,
+            email: credencial.email,
+            senha: "*****",
+            pagamentos: []
         }
+
+        return { client }
     })
 }
 

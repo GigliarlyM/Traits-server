@@ -13,10 +13,14 @@ export const createArtist = (app: FastifyInstance) => {
             })
         }
     }, async (request, response) => {
+        // Requisicao sem permanencia
         const { userName, clientEmail } = request.body
 
-        const artist = new Artista({ userName, client: clientEmail })
-        await artist.save()
+        const artist = {
+            userName: userName,
+            client: clientEmail,
+            artes: []
+        }
 
         return { artist }
     })
@@ -53,7 +57,7 @@ export const getArtistNameClient = (app: FastifyInstance) => {
             const client = await Cliente.findOne({ nome: name })
             if (client) {
                 const artist = await Artista.findOne({ client: client.email })
-                
+
                 return { artist }
             } else {
                 throw new Error("Cliente não encontrado: " + name)
